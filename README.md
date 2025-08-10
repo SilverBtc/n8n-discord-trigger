@@ -1,4 +1,4 @@
-# n8n-nodes-discord-trigger
+# n8n-discord-trigger
 
 ![n8n.io - Workflow Automation](https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png)
 
@@ -18,11 +18,6 @@ This node utilizes a Discord bot to transmit or receive data from child processe
 [Usage](#usage)  <!-- delete if not using this section -->  
 [Version history](#version-history)  <!-- delete if not using this section -->  
 
-## Installation
-
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
-
-
 ## Bot Setup
 
 To send, listen to messages, or fetch the list of channels or roles, you need to set up a bot using the [Discord Developer Portal](https://discord.com/developers/applications).
@@ -33,30 +28,30 @@ To send, listen to messages, or fetch the list of channels or roles, you need to
 
 
 
-## Operations
+## Installation
 
-With this node, you can:
-- Listen to Discord chat messages (both server messages and direct messages).
-- React to messages with specific patterns or triggers.
-- Fetch lists of channels and roles.
+Quick install guide
 
+1) Install the package in n8n (Community Nodes)
+- In n8n, go to Settings > Community Nodes > Install.
+- Search the npm package: `n8n-nodes-trigger-discord` (or your custom name) and install it.
 
+2) Create the “Discord Bot Trigger API” credentials
+- Settings > Credentials > New > “Discord Bot Trigger API”.
+- Fill in:
+	- Client ID: your Discord application client ID.
+	- Bot Token: your Discord bot token.
+	- n8n API key: from Settings > Personal Access Tokens in n8n.
+	- Base URL: your n8n API URL, e.g. `http://localhost:5678/api/v1` or `https://your-domain.tld/api/v1`.
 
-## Credentials
+3) Add the node and test
+- In a workflow, add “Discord Trigger”.
+- Choose “message” (or “direct-message”) and configure the text/pattern, server, channels, and roles.
+- Run in test mode or activate the workflow, then send a matching message to trigger it.
 
-You need to authenticate the node with the following credentials:
-- **Client ID**: The OAuth2 client ID of the Discord App.
-- **Bot Token**: The bot token of the Discord App.
-- **n8n API Key**: The API key of your n8n server.
-- **Base URL**: The API URL of your n8n instance (e.g., `https://n8n.example.com/api/v1`).
-
-Refer to the [official n8n documentation](https://docs.n8n.io/) for more details.
-
-
-## Compatibility
-
-- Tested on n8n version 1.75.2
-(coming soon)
+Notes
+- If you see ENOTFOUND on stop/deactivation, verify the credentials’ Base URL is resolvable and ends with `/api/v1`.
+- The bot must be added to your Discord server with the required intents/permissions (see Bot Setup below).
 
 
 ## Usage
