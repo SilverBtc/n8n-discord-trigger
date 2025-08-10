@@ -6,6 +6,7 @@ import {
     type IExecuteFunctions,
     type INodeParameters,
     INodeOutputConfiguration,
+    NodeConnectionType,
     NodeOperationError,
 } from 'n8n-workflow';
 import { options } from './DiscordInteraction.node.options';
@@ -67,6 +68,10 @@ export interface IDiscordNodeActionParameters {
     removeMessagesNumber: number;
     userId?: string;
     roleUpdateIds?: string[] | string;
+    // reaction action
+    messageId?: string;
+    emoji?: string;
+    reactionMode?: 'add' | 'remove';
 }
 
 
@@ -95,8 +100,9 @@ export class DiscordInteraction implements INodeType {
         defaults: {
             name: 'Discord Interaction',
         },
-        icon: 'file:discord-logo.svg',
-        inputs: ['main'],
+    icon: 'file:discord-logo.svg',
+    // eslint-disable-next-line n8n-nodes-base/node-class-description-inputs-wrong-regular-node
+    inputs: [NodeConnectionType.Main],
         outputs: `={{(${configuredOutputs})($parameter)}}`,
         credentials: [
             {

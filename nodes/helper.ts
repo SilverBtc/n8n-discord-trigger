@@ -192,21 +192,30 @@ export const getRoles = async (that: any, selectedGuildIds: string[]): Promise<I
 };
 
 
-export const checkWorkflowStatus = async (n8nApiUrl: String, apiToken: String, workflowId: String): Promise<boolean> => {
+export const checkWorkflowStatus = async (
+    n8nApiUrl: string,
+    apiToken: string,
+    workflowId: string,
+): Promise<boolean> => {
+    // If credentials are missing, assume active to avoid interfering with shutdown flow
+    if (!n8nApiUrl || !apiToken || !workflowId) {
+        return true;
+    }
+
     const apiUrl = `${removeTrailingSlash(n8nApiUrl)}/workflows/${workflowId}`;
-    return new Promise((resolve, reject) => {
-        axios.get(apiUrl, {
+    try {
+        const response = await axios.get(apiUrl, {
             headers: {
                 'X-N8N-API-KEY': `${apiToken}`,
             },
-        }).then(response => {
-            // return if workflow is active or not
-            resolve(response.data.active);
-        }).catch(e => {
-            console.error('Error checking workflow status:', e.message);
-            reject(e);
         });
-    });
+        return Boolean(response.data?.active);
+    } catch (e: any) {
+        // Do not throw here; network/DNS errors when archiving should not break workflow deactivation
+        console.error('Error checking workflow status:', e?.message ?? e);
+        // Default to active so we don't unexpectedly disconnect the bot for other nodes
+        return true;
+    }
 }
 
 
@@ -227,7 +236,8 @@ export const ipcRequest = (type: string, parameters: any): Promise<any> => {
 };
 
 
-function removeTrailingSlash(url: String) {
+function removeTrailingSlash(url: string) {
+    if (!url) return url;
     if (url.endsWith('/')) {
         return url.slice(0, -1);
     }
