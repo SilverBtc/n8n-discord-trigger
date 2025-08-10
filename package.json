@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-trigger-discord",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "A node that triggers a workflow whenever a message from discord is sent.",
   "keywords": [
     "n8n",
@@ -11,13 +11,17 @@
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/SilverBtc/n8n-discord-trigger#readme",
   "author": {
     "name": "Silver",
     "forkFrom": "katerlol"
   },
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "git+https://github.com/SilverBtc/n8n-discord-trigger.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SilverBtc/n8n-discord-trigger/issues"
   },
   "engines": {
     "node": ">=18.10",
