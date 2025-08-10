@@ -655,6 +655,33 @@ export default function () {
                                 roles.remove(roleId);
                         }
                     }
+                    // react with emoji (add/remove)
+                    else if (nodeParameters.actionType === 'reactWithEmoji') {
+                        const channel = <TextChannel>client.channels.cache.get(nodeParameters.channelId);
+                        if (!channel || !channel.isTextBased()) {
+                            ipc.server.emit(socket, `callback:send:action`, false);
+                            return;
+                        }
+                        const messageId = nodeParameters.messageId as string;
+                        const emoji = nodeParameters.emoji as string;
+                        const reactionMode = (nodeParameters.reactionMode as string) || 'add';
+
+                        const message = await channel.messages.fetch(messageId).catch(() => null);
+                        if (!message) {
+                            ipc.server.emit(socket, `callback:send:action`, false);
+                            return;
+                        }
+
+                        if (reactionMode === 'remove') {
+                            // Remove only the bot's reaction, if present
+                            const userReactions = message.reactions.cache.filter(r => r.emoji.toString() === emoji);
+                            for (const r of userReactions.values()) {
+                                await r.users.remove(client.user!.id).catch(() => null);
+                            }
+                        } else {
+                            await message.react(emoji);
+                        }
+                    }
                 };
 
                 await performAction();

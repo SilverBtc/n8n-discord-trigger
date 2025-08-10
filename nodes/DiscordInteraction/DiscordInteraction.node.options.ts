@@ -52,6 +52,11 @@ export const options: INodeProperties[] = [
                 value: 'removeRole',
                 description: 'Remove a role from a user',
             },
+            {
+                name: 'React with Emoji',
+                value: 'reactWithEmoji',
+                description: 'Add or remove a reaction on a message by ID',
+            },
         ],
         default: 'removeMessages',
         description: 'Let you choose the type of action you want to perform',
@@ -72,6 +77,51 @@ export const options: INodeProperties[] = [
         default: '',
         description: 'Let you specify the guild where you want the action to happen. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
     }, 
+    {
+        displayName: 'Reaction Operation',
+        name: 'reactionMode',
+        type: 'options',
+        displayOptions: {
+            show: {
+                type: ['action'],
+                actionType: ['reactWithEmoji'],
+            },
+        },
+        options: [
+            { name: 'Add', value: 'add' },
+            { name: 'Remove', value: 'remove' },
+        ],
+        default: 'add',
+        description: 'Whether to add or remove the reaction',
+    },
+    {
+        displayName: 'Message ID',
+        name: 'messageId',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                type: ['action'],
+                actionType: ['reactWithEmoji'],
+            },
+        },
+        default: '',
+    description: 'The message ID to react to (you can use an expression from previous node data)',
+    },
+    {
+        displayName: 'Emoji',
+        name: 'emoji',
+        type: 'string',
+        required: true,
+        displayOptions: {
+            show: {
+                type: ['action'],
+                actionType: ['reactWithEmoji'],
+            },
+        },
+        default: '',
+    description: 'Unicode character (e.g., ⏳) or custom emoji like name:ID',
+    },
     {
         displayName: 'Channel Name or ID',
         name: 'channelId',
